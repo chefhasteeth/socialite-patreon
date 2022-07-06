@@ -11,7 +11,7 @@ class Provider extends AbstractProvider
     /**
      * Unique Provider Identifier.
      */
-    const IDENTIFIER = 'PATREON';
+    public const IDENTIFIER = 'PATREON';
 
     /**
      * {@inheritdoc}
@@ -51,12 +51,14 @@ class Provider extends AbstractProvider
             'https://www.patreon.com/api/oauth2/v2/identity',
             [
                 'query' => [
+                    'include' => 'memberships.campaign',
                     'fields' => [
                         'user' => 'email,full_name,image_url,vanity',
+                        'member' => 'campaign_lifetime_support_cents,currently_entitled_amount_cents,pledge_cadence,pledge_relationship_start,patron_status,is_follower',
                     ],
                 ],
                 'headers' => [
-                    'Accept'        => 'application/json',
+                    'Accept' => 'application/json',
                     'Authorization' => 'Bearer ' . $token,
                 ],
             ],
@@ -68,15 +70,17 @@ class Provider extends AbstractProvider
     /**
      * {@inheritdoc}
      */
-    protected function mapUserToObject(array $user)
+    protected function mapUserToObject(array $user): User
     {
-        return (new User())->setRaw($user)->map([
-            'id'       => $user['data']['id'],
-            'nickname' => Arr::get($user['data']['attributes'], 'vanity', $user['data']['attributes']['full_name']),
-            'name'     => $user['data']['attributes']['full_name'],
-            'email'    => $user['data']['attributes']['email'],
-            'avatar'   => $user['data']['attributes']['image_url'],
-        ]);
+        return (new User())
+            ->setRaw($user)
+            ->map([
+                'id' => $user['data']['id'],
+                'nickname' => Arr::get($user, 'data.attributes.vanity', Arr::get($user, 'data.attributes.full_name')),
+                'name' => Arr::get($user, 'data.attributes.full_name'),
+                'email' => Arr::get($user, 'data.attributes.email'),
+                'avatar' => Arr::get($user, 'data.attributes.image_url'),
+            ]);
     }
 
     /**
@@ -89,3 +93,4 @@ class Provider extends AbstractProvider
         ]);
     }
 }
+

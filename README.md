@@ -1,12 +1,14 @@
-# Patreon
+# Patreon for Laravel Socialite
+
+This package provides compatibility with version 2 of the Patreon API (the official Patreon Socialite provider is only compatible with version 1 at the time of publication).
+
+## Installation & Basic Usage
 
 ```bash
 composer require chefhasteeth/socialite-patreon
 ```
 
-## Installation & Basic Usage
-
-Please see the [Base Installation Guide](https://socialiteproviders.com/usage/), then follow the provider specific instructions below.
+Please see the [Base Installation Guide](https://socialiteproviders.com/usage/) for Socialite Providers, then follow the provider specific instructions below.
 
 ### Add configuration to `config/services.php`
 

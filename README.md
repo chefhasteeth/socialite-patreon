@@ -1,7 +1,7 @@
 # Patreon
 
 ```bash
-composer require socialiteproviders/patreon
+composer require chefhasteeth/socialite-patreon
 ```
 
 ## Installation & Basic Usage
